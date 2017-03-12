@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/anvie/port-scanner"
-	"log"
 	"os"
 	"time"
 )
@@ -18,10 +17,10 @@ type Scan struct {
 
 func main() {
 
-	s := &Scan{Address: "127.0.0.1", Timeout: 30000, StartPort: 4000, EndPort: 9000} // Some defaults
+	s := &Scan{Address: "127.0.0.1", Timeout: 500000, StartPort: 3999, EndPort: 4001} // Some defaults
 	json.NewDecoder(os.Stdin).Decode(s)
 
-	log.Printf("Scanning %s for %s", s.Address, s.Timeout)
+	fmt.Printf("Scanning %s for %s", s.Address, s.Timeout)
 	ps := portscanner.NewPortScanner(s.Address, s.Timeout)
 
 	// get opened ports...
