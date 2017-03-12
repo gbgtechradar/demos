@@ -112,19 +112,25 @@ fn -v
 > fn version 0.1.40
 
 
+
 To get started quickly, we will start IronFunctions in Docker
 The following command will pull the docker images iron/functions from the official docker registry, and starts it on port 8080.
 
-    docker run --rm -it --name functions -v ${PWD}/data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 iron/functions
+```
+docker run --rm -it --name functions -v ${PWD}/data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 iron/functions
+```
 
 We can verify that it worked:
-    curl -l http://localhost:8080
-        {"goto":"https://github.com/iron-io/functions","hello":"world!"}
+```
+curl -l http://localhost:8080
+```
+> {"goto":"https://github.com/iron-io/functions","hello":"world!"}
 
 
 While we're at it, let's run the IronFunctions UI.
-
-    docker run --rm -it --link functions:api -p 4000:4000 -e "API_URL=http://api:8080" iron/functions-ui
+```
+docker run --rm -it --link functions:api -p 4000:4000 -e "API_URL=http://api:8080" iron/functions-ui
+```
 
 Paste this into your favourite web browser: http://localhost:4000
 This is the UI provided by IronFunctions; it will say "No Apps" - which is perfectly normal.
@@ -138,8 +144,11 @@ Register here:  https://hub.docker.com/
 
 Now you can login; it will ask you for username / password.
 
-    docker login 
-    _Login Succeeded_
+```
+docker login 
+```
+> Login Succeeded
+
 
 
 
@@ -147,9 +156,10 @@ Now you can login; it will ask you for username / password.
 
 First off, let's clone the git repository containing the demos
 
-    git clone http://github.com/gbgtechradar/demos
-
-    cd demos
+```
+git clone http://github.com/gbgtechradar/demos
+cd demos
+```
 
 
 If you want to, you can now explore the code. It is intentionally quite simple.
@@ -157,10 +167,10 @@ If you want to, you can now explore the code. It is intentionally quite simple.
 There are three directories, each corresponding to a function - and these in turn contain some files.
 We will focus on the PortScanner. The SlackWatcher and SlackResponder requires a Slack setup.
 
-    PortScanner
-       vendor
-       func.go
-       payload.json.example
+> PortScanner
+>   vendor
+>   func.go
+>   payload.json.example
 
 The payload.json.example file is an example input for the function. Ignore this for now.
 func.go contains the function implementations, and the vendor directory holds application dependencies (golang specific).
@@ -168,47 +178,65 @@ func.go contains the function implementations, and the vendor directory holds ap
 
 Now, let's initialize each function. Remember to replace $DOCKER_USERNAME with your username for Docker Hub.
 
-    cd PortScanner
-    fn init $DOCKER_USERNAME/portscanner 
-    _assuming go runtime_
-    _func.yaml created._
+```
+cd PortScanner
+fn init $DOCKER_USERNAME/portscanner 
+```
+> assuming go runtime
+> func.yaml created.
 
 
 This will create a func.yaml files that will look something like this
 
-    name: morero/portscanner
-    version: 0.0.1
-    runtime: go
-    entrypoint: ./func
+> name: morero/portscanner
+> version: 0.0.1
+> runtime: go
+> entrypoint: ./func
 
 
 IronFunctions automatically identifies the runtime for you, and sets a default entrypoint. Now, let's build and test one of the PortScanner function with function defaults.
 This will run a portscan on localhost, ports 20-100
 
-    fn build
-    fn run 
-        Scanning port 20-10000...
-        2017/03/09 21:45:26 Scanning localhost for 30µs
+```
+fn build
+fn run 
+```
+> Scanning port 20-10000...
+> 2017/03/09 21:45:26 Scanning localhost for 30µs
+
+
+
 
 That should take a while - wait for it to finish, or press Ctrl+C to abort.
 
 
 In next step, we push your function to the Docker Hub
-    fn push
-    _The push refers to a repository [docker.io/morero/portscanner]_
+```
+fn push
+```
+> The push refers to a repository [docker.io/morero/portscanner]
+
+
+
 
 Wait for that to finish... and now let's create our application. One application can contain multiple functions.
 
-    fn apps create portscanner
+```
+fn apps create portscanner
+```
 
 Now we create a route, register that with our application, and point it to our function
-    fn routes create portscanner /portscanner morero/portscanner
+```
+fn routes create portscanner /portscanner morero/portscanner
+```
 
 Remember the nice UI? Let's check again: http://localhost:4000
 You should now see our application. Click on it to explore routes and details.
 
 Now, let's do a slightly better test. We will send our payload.json.example towards our function, and wait for a response.
-    cat payload.json.example | fn call portscanner /portscanner
+```
+cat payload.json.example | fn call portscanner /portscanner
+```
 
 Done!
 
