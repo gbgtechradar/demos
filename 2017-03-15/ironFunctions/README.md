@@ -29,6 +29,7 @@ Guides are provided for running on Kubernetes and Docker Swarm.
 - Flexible
 - Builds on common standards and best practices
 - Comes with a WEB UI for monitoring
+- Compiles your code inside a docker
 
 ### Cons
 - Not very mature
@@ -39,13 +40,12 @@ Guides are provided for running on Kubernetes and Docker Swarm.
 ### What would I use it for?
 
 I would consider using IronFunctions for asynchronous heavy workloads; like image processing & number crunching.
-Sandbox environments is a particularly interesting use case.
-
-On a more speculative level, I think it might be used to realize Pipelines as code (CI/CD), but this would require some assembly.
+Sandboxes, and development environments is a particularly interesting use case.
 
 I like the way IronFunctions is leaning on standards and best practices - and might be tempted to test it for Microservices with CQRS.
 ##### Would that be Nanoservices?
 
+Since it runs in Kubernetes, I would be interested in experimenting with a combined solution for microservices & FaaS.
 
 
 ### What would I avoid
@@ -58,6 +58,8 @@ Personally, I am tempted to keep functions small and the environment minimalisti
 
 Also - given it's immaturity - I would not consider running anything critical on IronFunctions.
 
+While IronFunctions can run in the cloud as well as on premise, it requires an infrastructure effort. It is easier to get started with one of the existing cloud solutions.
+
 
 ### Good to know
 
@@ -66,7 +68,10 @@ Also - given it's immaturity - I would not consider running anything critical on
 - Metrics can be used for autoscaling, but it's not automatic
 
 
-## IronFunctions, Golang, Portscanning, and Slackbots...
+## Recommendation - Wait
+
+
+## IronFunctions, Golang &  Portscanning
 
 ### Why?
 
@@ -76,24 +81,10 @@ I wanted something easy, fun - and something that I could implement quickly.
 Portscanning makes a decent use case.
 
 
-### How it works
-
-I invited a custom slackbot to a channel created for the purpose.
-The slackbot has its own API token.
-
-I wrote three IronFunctions in GO:
-
-
-
-SlackWatcher: Will watch for incoming message events.
-PortScanner: Will perform a portscan.
-SlackResponder: Will send a message with the results back to slack.
-
-The demo code is available on GitHub: https://github.com/gbgtechradar/demos
-The meetup group has a slack team: gbgtechradar.slack.com
-
 
 ### Demo Time
+
+The demo code is available on GitHub: https://github.com/gbgtechradar/demos
 
 #### Prerequisites
 
@@ -114,6 +105,13 @@ If you are new to this: https://docs.docker.com/engine/getstarted/step_one/
 First, grab the IronFunctions CLI tool, fn:
     curl -LSs https://goo.gl/VZrL8t | sh
 
+You can test this by running
+```bash
+fn -v
+```
+> fn version 0.1.40
+
+
 To get started quickly, we will start IronFunctions in Docker
 The following command will pull the docker images iron/functions from the official docker registry, and starts it on port 8080.
 
@@ -121,7 +119,7 @@ The following command will pull the docker images iron/functions from the offici
 
 We can verify that it worked:
     curl -l http://localhost:8080
-    _{"goto":"https://github.com/iron-io/functions","hello":"world!"}_
+        {"goto":"https://github.com/iron-io/functions","hello":"world!"}
 
 
 While we're at it, let's run the IronFunctions UI.
@@ -171,14 +169,14 @@ func.go contains the function implementations, and the vendor directory holds ap
 Now, let's initialize each function. Remember to replace $DOCKER_USERNAME with your username for Docker Hub.
 
     cd PortScanner
-    fn init $DOCKER_USERNAME/gbgtechradar-portscanner 
+    fn init $DOCKER_USERNAME/portscanner 
     _assuming go runtime_
     _func.yaml created._
 
 
 This will create a func.yaml files that will look something like this
 
-    name: morero/gbgtechradar-portscanner
+    name: morero/portscanner
     version: 0.0.1
     runtime: go
     entrypoint: ./func
@@ -197,20 +195,20 @@ That should take a while - wait for it to finish, or press Ctrl+C to abort.
 
 In next step, we push your function to the Docker Hub
     fn push
-    _The push refers to a repository [docker.io/morero/gbgtechradar-portscanner]_
+    _The push refers to a repository [docker.io/morero/portscanner]_
 
 Wait for that to finish... and now let's create our application. One application can contain multiple functions.
 
-    fn apps create gbgtechradar-demo
+    fn apps create portscanner
 
 Now we create a route, register that with our application, and point it to our function
-    fn routes create gbgtechradar-demo /portscanner morero/gbgtechradar-portscanner
+    fn routes create portscanner /portscanner morero/portscanner
 
 Remember the nice UI? Let's check again: http://localhost:4000
 You should now see our application. Click on it to explore routes and details.
 
 Now, let's do a slightly better test. We will send our payload.json.example towards our function, and wait for a response.
-    cat payload.json.example | fn call gbgtechradar-demo/portscanner
+    cat payload.json.example | fn call portscanner /portscanner
 
 Done!
 
@@ -219,3 +217,4 @@ Done!
 
 ### Q/A
 
+?
