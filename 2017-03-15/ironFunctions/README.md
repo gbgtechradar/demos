@@ -106,7 +106,7 @@ First, grab the IronFunctions CLI tool, fn:
     curl -LSs https://goo.gl/VZrL8t | sh
 
 You can test this by running
-```bash
+```
 fn -v
 ```
 > fn version 0.1.40
