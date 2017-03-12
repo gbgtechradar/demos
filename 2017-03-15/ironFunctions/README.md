@@ -112,8 +112,8 @@ You can test this by running
 fn -v
 ```
 > fn version 0.1.40
-  
-  
+   
+    
 
 To get started quickly, we will start IronFunctions in Docker
 The following command will pull the docker images iron/functions from the official docker registry, and starts it on port 8080.
