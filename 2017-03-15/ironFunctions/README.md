@@ -96,16 +96,18 @@ If you are new to this: https://docs.docker.com/engine/getstarted/step_one/
 
 - You will need to register for a free Docker Hub account.
 
-  
-  
+<br />
+<br />
+<br />
 
-
-#### 1. Running IronFunctions and the UI
+### 1. Running IronFunctions and the UI
 
 ##### This is based on the official instructions: https://github.com/iron-io/functions
 
 First, grab the IronFunctions CLI tool, fn:
-    curl -LSs https://goo.gl/VZrL8t | sh
+```
+curl -LSs https://goo.gl/VZrL8t | sh
+```
 
 You can test this by running
 ```
@@ -129,7 +131,8 @@ curl -l http://localhost:8080
 ```
 > {"goto":"https://github.com/iron-io/functions","hello":"world!"}
 
-
+<br />
+<br />
 While we're at it, let's run the IronFunctions UI.
 ```
 docker run --rm -it --link functions:api -p 4000:4000 -e "API_URL=http://api:8080" iron/functions-ui
@@ -139,7 +142,9 @@ Paste this into your favourite web browser: http://localhost:4000
 This is the UI provided by IronFunctions; it will say "No Apps" - which is perfectly normal.
 
 
-#### Docker Hub - Login
+<br />
+<br />
+### 2. Docker Hub - Login
 
 IronFunctions only works with the official docker registry at the moment, this is free, but you need to register for an account.s
 
@@ -152,10 +157,10 @@ docker login
 ```
 > Login Succeeded
 
+<br />
+<br />
 
-
-
-#### Getting the demo code
+### 3. Getting the demo code
 
 First off, let's clone the git repository containing the demos
 
@@ -163,8 +168,8 @@ First off, let's clone the git repository containing the demos
 git clone http://github.com/gbgtechradar/demos
 cd demos
 ```
-
-
+<br />
+<br />
 If you want to, you can now explore the code. It is intentionally quite simple.
 
 There are three directories, each corresponding to a function - and these in turn contain some files.
@@ -179,6 +184,8 @@ The payload.json.example file is an example input for the function. Ignore this 
 func.go contains the function implementations, and the vendor directory holds application dependencies (golang specific).
 
 
+<br />
+<br />
 Now, let's initialize each function. Remember to replace $DOCKER_USERNAME with your username for Docker Hub.
 
 ```
@@ -189,6 +196,8 @@ fn init $DOCKER_USERNAME/portscanner
 > func.yaml created.
 
 
+<br />
+<br />
 This will create a func.yaml files that will look something like this
 
 > name: morero/portscanner
@@ -197,6 +206,8 @@ This will create a func.yaml files that will look something like this
 > entrypoint: ./func
 
 
+<br />
+<br />
 IronFunctions automatically identifies the runtime for you, and sets a default entrypoint. Now, let's build and test one of the PortScanner function with function defaults.
 This will run a portscan on localhost, ports 20-100
 
@@ -208,6 +219,9 @@ fn run
 > 2017/03/09 21:45:26 Scanning localhost for 30µs
 
 
+<br />
+<br />
+<br />
 
 
 That should take a while - wait for it to finish, or press Ctrl+C to abort.
@@ -219,6 +233,8 @@ fn push
 ```
 > The push refers to a repository [docker.io/morero/portscanner]
 
+<br />
+<br />
 
 
 
@@ -233,6 +249,8 @@ Now we create a route, register that with our application, and point it to our f
 fn routes create portscanner /portscanner morero/portscanner
 ```
 
+<br />
+<br />
 Remember the nice UI? Let's check again: http://localhost:4000
 You should now see our application. Click on it to explore routes and details.
 
@@ -244,6 +262,9 @@ cat payload.json.example | fn call portscanner /portscanner
 Done!
 
 
+<br />
+<br />
+<br />
 
 
 ### Q/A
