@@ -17,7 +17,7 @@ type Scan struct {
 
 func main() {
 
-	s := &Scan{Address: "127.0.0.1", Timeout: 500000, StartPort: 3999, EndPort: 4001} // Some defaults
+	s := &Scan{Address: "127.0.0.1", Timeout: 200000, StartPort: 3999, EndPort: 4001} // Some defaults
 	json.NewDecoder(os.Stdin).Decode(s)
 
 	fmt.Printf("Scanning %s for %s", s.Address, s.Timeout)

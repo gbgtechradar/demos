@@ -1,1 +1,1 @@
-{"address":"127.0.0.1","timeout":300000, "startPort":3999, "endPort": 4001}
+{"address":"127.0.0.1","timeout":200000, "startPort":3999, "endPort": 4001}
