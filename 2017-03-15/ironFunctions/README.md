@@ -251,12 +251,14 @@ fn push
 
 
 
-Wait for that to finish... and now let's create our application. One application can contain multiple functions.
+Wait for that to finish... 
 
 <br />
 <br />
 <br />
 ### 4. Our first application and routes
+
+And now let's create our application. One application can contain multiple functions.
 
 ```
 fn apps create portscanner
@@ -270,8 +272,7 @@ fn routes create portscanner /portscanner morero/portscanner
 <br />
 <br />
 ### 4. The results
-<br />
-<br />
+
 Remember the nice UI? Let's check again: http://localhost:4000
 You should now see our application. Click on it to explore routes and details.
 
