@@ -175,10 +175,12 @@ If you want to, you can now explore the code. It is intentionally quite simple.
 There are three directories, each corresponding to a function - and these in turn contain some files.
 We will focus on the PortScanner. The SlackWatcher and SlackResponder requires a Slack setup.
 
-> PortScanner
->   vendor
->   func.go
->   payload.json.example
+```
+PortScanner
+  vendor
+  func.go
+  payload.json.example
+```
 
 The payload.json.example file is an example input for the function. Ignore this for now.
 func.go contains the function implementations, and the vendor directory holds application dependencies (golang specific).
@@ -200,10 +202,12 @@ fn init $DOCKER_USERNAME/portscanner
 <br />
 This will create a func.yaml files that will look something like this
 
-> name: morero/portscanner
-> version: 0.0.1
-> runtime: go
-> entrypoint: ./func
+```
+name: morero/portscanner
+version: 0.0.1
+runtime: go
+entrypoint: ./func
+```
 
 
 <br />
