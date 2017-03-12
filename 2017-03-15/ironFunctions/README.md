@@ -68,9 +68,12 @@ While IronFunctions can run in the cloud as well as on premise, it requires an i
 - Metrics can be used for autoscaling, but it's not automatic
 
 
-## Recommendation - Wait
+### Recommendation 
+Wait. Let the project mature a bit, and then reevaluate. 
 
-
+<br />
+<br />
+<br />
 ## IronFunctions, Golang &  Portscanning
 
 ### Why?
@@ -100,13 +103,58 @@ If you are new to this: https://docs.docker.com/engine/getstarted/step_one/
 <br />
 <br />
 
-### 1. Running IronFunctions and the UI
+### 1. Getting the demo code
+
+First off, let's clone the git repository containing the demos
+
+```
+git clone http://github.com/gbgtechradar/demos
+cd demos
+```
+<br />
+<br />
+If you want to, you can now explore the code. It is intentionally quite simple.
+
+There are three directories, each corresponding to a function - and these in turn contain some files.
+We will focus on the PortScanner. The SlackWatcher and SlackResponder requires a Slack setup.
+
+```
+PortScanner
+  vendor
+  func.go
+  payload.json.example
+```
+
+The payload.json.example file is an example input for the function. Ignore this for now.
+func.go contains the function implementations, and the vendor directory holds application dependencies (golang specific).
+
+<br />
+<br />
+
+### 2. Docker Hub - Login
+
+IronFunctions only works with the official docker registry at the moment, this is free, but you need to register for an account.s
+
+Register here:  https://hub.docker.com/ 
+
+Now you can login; it will ask you for username / password.
+
+```
+docker login 
+```
+> Login Succeeded
+
+<br />
+<br />
+
+
+### 3. Starting IronFunctions and the UI
 
 ##### This is based on the official instructions: https://github.com/iron-io/functions
 
-First, grab the IronFunctions CLI tool, fn:
+First, grab the latest version of the IronFunctions CLI tool, *fn*.
 ```
-curl -LSs https://goo.gl/VZrL8t | sh
+curl -LSs https://raw.githubusercontent.com/iron-io/functions/master/fn/install.sh | sh
 ```
 
 You can test this by running
@@ -138,55 +186,16 @@ While we're at it, let's run the IronFunctions UI.
 docker run --rm -it --link functions:api -p 4000:4000 -e "API_URL=http://api:8080" iron/functions-ui
 ```
 
-Paste this into your favourite web browser: http://localhost:4000
+Paste this url into your favourite web browser: 
+> http://localhost:4000
+
 This is the UI provided by IronFunctions; it will say "No Apps" - which is perfectly normal.
 
 
-<br />
-<br />
-### 2. Docker Hub - Login
-
-IronFunctions only works with the official docker registry at the moment, this is free, but you need to register for an account.s
-
-Register here:  https://hub.docker.com/ 
-
-Now you can login; it will ask you for username / password.
-
-```
-docker login 
-```
-> Login Succeeded
-
-<br />
+<br /
 <br />
 
-### 3. Getting the demo code
-
-First off, let's clone the git repository containing the demos
-
-```
-git clone http://github.com/gbgtechradar/demos
-cd demos
-```
-<br />
-<br />
-If you want to, you can now explore the code. It is intentionally quite simple.
-
-There are three directories, each corresponding to a function - and these in turn contain some files.
-We will focus on the PortScanner. The SlackWatcher and SlackResponder requires a Slack setup.
-
-```
-PortScanner
-  vendor
-  func.go
-  payload.json.example
-```
-
-The payload.json.example file is an example input for the function. Ignore this for now.
-func.go contains the function implementations, and the vendor directory holds application dependencies (golang specific).
-
-
-<br />
+### 4. Build and push your function
 <br />
 Now, let's initialize each function. Remember to replace $DOCKER_USERNAME with your username for Docker Hub.
 
@@ -244,6 +253,11 @@ fn push
 
 Wait for that to finish... and now let's create our application. One application can contain multiple functions.
 
+<br />
+<br />
+<br />
+### 4. Our first application and routes
+
 ```
 fn apps create portscanner
 ```
@@ -253,6 +267,9 @@ Now we create a route, register that with our application, and point it to our f
 fn routes create portscanner /portscanner morero/portscanner
 ```
 
+<br />
+<br />
+### 4. The results
 <br />
 <br />
 Remember the nice UI? Let's check again: http://localhost:4000
