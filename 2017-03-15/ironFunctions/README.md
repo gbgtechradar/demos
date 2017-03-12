@@ -96,9 +96,11 @@ If you are new to this: https://docs.docker.com/engine/getstarted/step_one/
 
 - You will need to register for a free Docker Hub account.
 
+  
+  
 
 
-#### Running IronFunctions and the UI
+#### 1. Running IronFunctions and the UI
 
 ##### This is based on the official instructions: https://github.com/iron-io/functions
 
@@ -110,8 +112,8 @@ You can test this by running
 fn -v
 ```
 > fn version 0.1.40
-
-
+  
+  
 
 To get started quickly, we will start IronFunctions in Docker
 The following command will pull the docker images iron/functions from the official docker registry, and starts it on port 8080.
