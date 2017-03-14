@@ -1,0 +1,8 @@
+name: morero/slackascii
+version: 0.0.1
+format: http
+type: sync
+memory: 128
+timeout: 1000
+runtime: go
+entrypoint: ./func

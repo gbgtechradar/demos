@@ -37,35 +37,14 @@ Guides are provided for running on Kubernetes and Docker Swarm.
 - Requires an infrastructure effort to be really useful
 - Probably works best with an orchestration layer.
 
-### What would I use it for?
-
-I would consider using IronFunctions for asynchronous heavy workloads; like image processing & number crunching.
-Sandboxes, and development environments is a particularly interesting use case.
-
-I like the way IronFunctions is leaning on standards and best practices - and might be tempted to test it for Microservices with CQRS.
-##### Would that be Nanoservices?
-
-Since it runs in Kubernetes, I would be interested in experimenting with a combined solution for microservices & FaaS.
-
-
-### What would I avoid
-
-
-Due to latency, I would probably not use it for any client/server communications, anything requiring real-time communication - or web applications.
-However, Iron have introduced a concept called Hot Functions which reuses containers and reduces latency.
-
-Personally, I am tempted to keep functions small and the environment minimalistic - this would probably rule out anything using standard JVMs.
-
-Also - given it's immaturity - I would not consider running anything critical on IronFunctions.
-
-While IronFunctions can run in the cloud as well as on premise, it requires an infrastructure effort. It is easier to get started with one of the existing cloud solutions.
-
 
 ### Good to know
 
 - Support for private docker registries is still under development
 - For higher throughput - consider using Hot Functions
 - Metrics can be used for autoscaling, but it's not automatic
+- Code runs in DinD - Docker in Docker
+- You can not yet chain function calls
 
 
 ### Recommendation 
@@ -74,14 +53,13 @@ Wait. Let the project mature a bit, and then reevaluate.
 <br />
 <br />
 <br />
-## IronFunctions, Golang &  Portscanning
+## IronFunctions, Golang & Ascii Art
 
 ### Why?
 
 #### Laziness. 
 
 I wanted something easy, fun - and something that I could implement quickly.
-Portscanning makes a decent use case.
 
 
 
@@ -116,10 +94,10 @@ cd demos
 If you want to, you can now explore the code. It is intentionally quite simple.
 
 There are three directories, each corresponding to a function - and these in turn contain some files.
-We will focus on the PortScanner. The SlackWatcher and SlackResponder requires a Slack setup.
+We will focus on the Ascii function. The SlackAscii requires a Slack setup. 
 
 ```
-PortScanner
+Ascii
   vendor
   func.go
   payload.json.example
@@ -200,8 +178,8 @@ This is the UI provided by IronFunctions; it will say "No Apps" - which is perfe
 Now, let's initialize each function. Remember to replace $DOCKER_USERNAME with your username for Docker Hub.
 
 ```
-cd PortScanner
-fn init $DOCKER_USERNAME/portscanner 
+cd Ascii
+fn init $DOCKER_USERNAME/ascii
 ```
 > assuming go runtime
 > func.yaml created.
@@ -212,7 +190,7 @@ fn init $DOCKER_USERNAME/portscanner
 This will create a func.yaml files that will look something like this
 
 ```
-name: morero/portscanner
+name: morero/ascii
 version: 0.0.1
 runtime: go
 entrypoint: ./func
@@ -221,15 +199,13 @@ entrypoint: ./func
 
 <br />
 <br />
-IronFunctions automatically identifies the runtime for you, and sets a default entrypoint. Now, let's build and test one of the PortScanner function with function defaults.
-This will run a portscan on localhost, ports 20-100
+IronFunctions automatically identifies the runtime for you, and sets a default entrypoint. Now, let's build and test the Ascii function with function defaults.
 
 ```
 fn build
 fn run 
 ```
-> Scanning port 20-10000...
-> 2017/03/09 21:45:26 Scanning localhost for 30µs
+> Hello World
 
 
 <br />
@@ -244,7 +220,7 @@ In next step, we push your function to the Docker Hub
 ```
 fn push
 ```
-> The push refers to a repository [docker.io/morero/portscanner]
+> The push refers to a repository [docker.io/morero/ascii]
 
 <br />
 <br />
@@ -261,12 +237,12 @@ Wait for that to finish...
 And now let's create our application. One application can contain multiple functions.
 
 ```
-fn apps create portscanner
+fn apps create ascii 
 ```
 
 Now we create a route, register that with our application, and point it to our function
 ```
-fn routes create portscanner /portscanner morero/portscanner
+fn routes create ascii /ascii morero/ascii
 ```
 
 <br />
@@ -278,7 +254,7 @@ You should now see our application. Click on it to explore routes and details.
 
 Now, let's do a slightly better test. We will send our payload.json.example towards our function, and wait for a response.
 ```
-cat payload.json.example | fn call portscanner /portscanner
+cat payload.json.example | fn call ascii /ascii
 ```
 
 Done!
