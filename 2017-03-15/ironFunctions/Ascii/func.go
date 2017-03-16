@@ -2,16 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"os"
-
 	"github.com/common-nighthawk/go-figure"
-
+	"os"
 )
 
 type Ascii struct {
-	Text   string
-	Font   string
-
+	Text string
+	Font string
 }
 
 func main() {
@@ -23,5 +20,5 @@ func main() {
 	json.NewDecoder(os.Stdin).Decode(ascii)
 
 	//Draw ascii
-	figure.NewFigure(ascii.Text, ascii.Font, false).Scroll(20000,200, "right")
+	figure.NewFigure(ascii.Text, ascii.Font, false).Print()
 }
